@@ -1,7 +1,9 @@
 package tst.jumia.BIN.impl;
 
+import tst.jumia.BIN.dto.CardSchemaDTO;
+
 public interface CardInterface {
-	String verify(String id);
+	CardSchemaDTO verify(String id);
 	
-	String stats(int start , int limit);
+	CardSchemaDTO stats(int start , int limit);
 }

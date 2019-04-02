@@ -4,21 +4,21 @@ import tst.jumia.BIN.pojo.Card;
 
 public class ValidateMapper {
 
-	public ValidateStatus convertToDTO(Card card) {
-		ValidateStatus newStatus = new ValidateStatus();
+	public CardSchemaDTO convertToDTO(Card card) {
+		CardSchemaDTO newStatus = new CardSchemaDTO();
 		
 		if(card != null) {
-			Payload newPayload = new Payload();
+			PayloadDTO newPayload = new PayloadDTO();
 			newPayload.setType(card.getType());		
-			newPayload.setScheme(card.getScheme());
+			newPayload.setSchema(card.getScheme());
 			newPayload.setBank(card.getBank().getName());
-			newStatus.setSucess(true);
+			newStatus.setSuccess(true);
 			newStatus.setPayload(newPayload);
 			
 			return newStatus;
 		}
 		
-		newStatus.setSucess(false);
+		newStatus.setSuccess(false);
 		
 		return newStatus;
 	}

@@ -12,18 +12,20 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import tst.jumia.BIN.dto.CardSchemaDTO;
 import tst.jumia.BIN.dto.ValidateMapper;
-import tst.jumia.BIN.dto.ValidateStatus;
 import tst.jumia.BIN.pojo.Card;
 
 @Component
 public class CardInterfaceImpl implements CardInterface {
-
+	
 	@Override
-	public String verify(String id) {
+	public CardSchemaDTO verify(String id) {
 		String response = null;
-		ValidateStatus myStatus = new ValidateStatus();
 		ObjectMapper mapper = new ObjectMapper();
+		
+		CardSchemaDTO myDTO = new CardSchemaDTO();
+		myDTO.setSuccess(false);
 		
 		try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 			HttpGet httpGet = new HttpGet("https://lookup.binlist.net/" + id);
@@ -36,28 +38,27 @@ public class CardInterfaceImpl implements CardInterface {
 			
 		try {
 			if(!response.equalsIgnoreCase("")) {
-				Card card = mapper.readValue(response, Card.class);		
-				ValidateMapper objectMapper = new ValidateMapper();				
-				myStatus = objectMapper.convertToDTO(card);			
-				return mapper.writeValueAsString(myStatus);				
+				Card card = mapper.readValue(response, Card.class);					
+				ValidateMapper objectMapper = new ValidateMapper();					
+				return objectMapper.convertToDTO(card);			
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		
-		myStatus.setSucess(false);
+		
 		try {
-			response = mapper.writeValueAsString(myStatus);
+			response = mapper.writeValueAsString(myDTO);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
 		
-		return response;
+		return myDTO;
 	}
 
 	@Override
-	public String stats(int start, int limit) {
+	public CardSchemaDTO stats(int start, int limit) {
 		// TODO Auto-generated method stub
 		return null;
 	}
